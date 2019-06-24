@@ -1,0 +1,32 @@
+﻿@{
+	ViewData["Title"] = "Home Page";
+}
+<h2>
+	Hello World
+</h2>
+<div>
+	@ViewBag.JsonResponse
+</div>
+<div style="margin-top: 10px">
+	<button type="button" id="btnAjax" class="btn">Ajax</button>
+	<div id="fromApi">
+
+	</div>
+</div>
+@section Scripts
+{
+	<script type="text/javascript">
+		$("#btnAjax").click(function () {
+			$.ajax({
+				type: "Get",
+				url: "https://localhost:44355/api/Values",
+				success: function (data) {
+					$("#fromApi").text(data);
+				},
+				error: function (error) {
+					$("#fromApi").text(error.responseText);
+				}
+			});
+		});
+	</script>
+}
