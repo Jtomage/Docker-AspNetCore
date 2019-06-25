@@ -42,4 +42,7 @@ Where
 
 ## Issues
 ### Windows 10 
-There may be a problem when trying to run the docker image if the port has been used previously. Check to see that the application using the port has been stopped and removed. If it has been removed then restart Docker which should clean up the port and allow the container to run. 
+There may be a problem when trying to run the docker image if the port has been used previously. Check to see that the application using the port has been stopped and removed. If it has been removed then restart Docker which should clean up the port and allow the container to run. Sample of error
+```
+Error starting userland proxy
+```
