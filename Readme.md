@@ -9,14 +9,15 @@ A simple Asp.NET Core application wrapped with docker. There are 2 web applicati
 The idea behind this architecture is the seperation between the Web UI and the Data access layer that call that accesses the database. This should allow easier updating to the Web UI and data layer and reuse of the data access layer such as a mobile application.
 
 Future Updates
-[ ] Configurable ports aka not hard coded
-[ ] SSL Certificate support
-[ ] docker swarm support
-[ ] kubernetes support
-[ ] Attach database
-[ ] auto unit testings
-[ ] Encryption support
-[ ] DNS support
+- [ ] Configurable ports aka not hard coded
+- [ ] Environment variables configuration support for docker
+- [ ] SSL Certificate support
+- [ ] docker swarm support
+- [ ] kubernetes support
+- [ ] Attach database
+- [ ] Attach InMemory database
+- [ ] Encryption support
+- [ ] DNS support
 
 ## Getting Started
 Download and install docker
