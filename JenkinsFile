@@ -7,7 +7,7 @@ openshift.withCluster() {
 pipeline {
 	agent {
 		node {
-			label 'aspnetcore-docker'
+			label "master"
 		}
 	}
 	environment {
@@ -19,16 +19,9 @@ pipeline {
 		timeout(time: 20, unit: 'MINUTES')
 	}
 	stages {
-		/*stage('Get the code') {
-			echo "Getting the code"
-			steps {
-				//Get the code
-				git 'https://github.com/Jtomage/Docker-AspNetCore.git' 
-			}
-		}*/
 		stage('Apply Openshift templates') {
 			steps{
-				echo "Applying templates"
+				echo 'Applying templates'
 				dir("CoreApiContainer"){
 					script{
 						//create or update template and "create it aka apply"
@@ -39,8 +32,9 @@ pipeline {
 		}
 		stage('Build Image'){
 			steps{
-				echo "Building Image"
+				echo 'Building Image'
 				script{
+					//Build the image for aspnetcore-api-docker
 					openshiftBuild(bldCfg: "${en.API_NAME}", showBuildLogs: 'true')
 				}
 			}
