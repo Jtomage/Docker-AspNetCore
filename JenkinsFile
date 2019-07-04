@@ -27,8 +27,8 @@ pipeline {
 			}
 		}*/
 		stage('Apply Openshift templates') {
-			echo "Applying templates"
 			steps{
+				echo "Applying templates"
 				dir("CoreApiContainer"){
 					//create or update template and "create it aka apply"
 					openshift.raw("process -f aspnetcore-docker-template.yml -p NAME=${env.API_NAME} -p JURISDICTION=DEV | oc apply -f-")
@@ -36,8 +36,8 @@ pipeline {
 			}
 		}
 		stage('Build Image'){
-			echo "Building Image"
 			steps{
+				echo "Building Image"
 				openshiftBuild(bldCfg: "${en.API_NAME}", showBuildLogs: 'true')
 			}
 		}		
