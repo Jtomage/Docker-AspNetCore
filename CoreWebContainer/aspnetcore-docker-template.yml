@@ -1,0 +1,75 @@
+kind: Template
+apiVersion: v1
+metadata:
+  name: aspnetcore-docker-template
+objects:
+  - kind: ImageStream
+    apiVersion: v1
+    metadata:
+      name: "${NAME}"
+      labels:
+        app: "${NAME}"
+        jurisdiction: "${JURISDICTION}"
+    spec: {}
+  - kind: BuildConfig
+    apiVersion: v1
+    metadata:
+      name: ${NAME}
+      labels:
+        app: "${NAME}"
+        jurisdiction: "${JURISDICTION}"
+    spec:
+      nodeSelector: null
+      output:
+        to: 
+          kind: ImageStreamTag
+          name: "${NAME}:latest"
+      resources: {}
+      strategy:
+        type: Docker
+        dockerStrategy:
+          dockerfilePath: CoreWebContainer\Dockerfile
+      postCommit: {}
+      triggers: []
+      runPolicy: Serial
+  - kind: Service
+    apiVersion: v1
+    metadata:
+      name: "${NAME}"
+      labels:
+        app: "${NAME}"
+        jurisdiction: "${JURISDICTION}"
+    spec:
+      ports:
+        - name: http
+          protocol: TCP
+          port: 80
+          targetPort: 8080
+      selector:
+        app: ${NAME}
+        jurisdiction: "${JURISDICTION}
+  - kind: Route
+    apiVersion: v1
+    metadata:
+      name: "${NAME}"
+      labels:
+        app: "${NAME}"
+        jurisdiction: "${JURISDICTION}"
+    spec:
+      host: "${HOSTNAME_HTTP}"
+      subdomain: ''
+      to:
+        kind: Service
+        name: "${NAME}"
+parameters:
+  - name: NAME
+    description: The name for the application
+    required: true
+    displayName: NAME
+  - name: JURISDICTION
+    description: Where the application is be deployed, eg Dev, Test, or Prod
+    required: true
+    displayName: JURISDICTION
+  - name: HOSTNAME_HTTP
+    description: "Custom host name for http service route. Leave Blank for default hostname, e.g.: <application-name>-<project>.<default-domain-suffix> "
+    displayName: Http Host Name

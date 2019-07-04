@@ -1,0 +1,44 @@
+openshift.withCluster() {
+	env.NAMESPACE = openshift.project()
+  env.DEV = openshift.project()                   //use the same name space for dev now
+	echo "Starting pipeline"
+}
+
+pipeline {
+	agent {
+		node {
+			label 'aspnetcore-docker'
+		}
+	}
+	environment {
+		//Global Vars
+		API_NAME = "aspnetcore-api-docker"
+		UI_NAME = "aspnetcore-ui-docker"
+	}
+	options {
+		timeout(time: 20, unit: 'MINUTES')
+	}
+	stages {
+		/*stage('Get the code') {
+			echo "Getting the code"
+			steps {
+				//Get the code
+				git 'https://github.com/Jtomage/Docker-AspNetCore.git' 
+			}
+		}*/
+		stage('Apply Openshift templates') {
+			echo "Applying templates"
+			steps{
+				dir("CoreApiContainer"){
+					//create or update template and "create it aka apply"
+					openshift.raw("process -f aspnetcore-docker-template.yml -p NAME=${env.API_NAME} -p JURISDICTION=DEV | oc apply -f-")
+				}
+			}
+		}
+		stage('Build Image'){
+			echo "Building Image"
+			steps{
+				openshiftBuild(bldCfg: "${en.API_NAME}", showBuildLogs: 'true')
+			}
+		}		
+}
