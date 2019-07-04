@@ -41,4 +41,5 @@ pipeline {
 				openshiftBuild(bldCfg: "${en.API_NAME}", showBuildLogs: 'true')
 			}
 		}		
+	}
 }
