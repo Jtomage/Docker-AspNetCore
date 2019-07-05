@@ -40,7 +40,7 @@ objects:
         app: ${NAME}
         jurisdiction: ${JURISDICTION}
     spec:
-      host: '${HTTP_HOSTNAME}'
+      host: ${HTTP_HOSTNAME}
       to:
         kind: Service
         name: ${NAME}
@@ -49,10 +49,10 @@ objects:
   - kind: Service
     apiVersion: v1
     metadata:
-      name: "${NAME}"
+      name: ${NAME}
       labels:
-        app: "${NAME}"
-        jurisdiction: "${JURISDICTION}"
+        app: ${NAME}
+        jurisdiction: ${JURISDICTION}
     spec:
       ports:
         - name: http
