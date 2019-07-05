@@ -27,7 +27,7 @@ pipeline {
 						//create or update template and "create it aka apply"
 						openshift.withCluster(){
 							openshift.withProject(env.NAMESPACE){
-								sh """oc process -f aspnetcore-docker-template.yml --param=NAME=${env.API_NAME} -param=JURISDICTION=DEV | oc apply -f-")
+								sh """oc process -f aspnetcore-docker-template.yml --param=NAME=${env.API_NAME} -param=JURISDICTION=DEV | oc apply -f-"""
 							}
 						}
 					}
