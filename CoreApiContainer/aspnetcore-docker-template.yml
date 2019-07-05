@@ -50,11 +50,6 @@ objects:
         jurisdiction: "${JURISDICTION}
   - kind: Route
     apiVersion: v1
-    metadata:
-      name: "${NAME}"
-      labels:
-        app: "${NAME}"
-        jurisdiction: "${JURISDICTION}"
     spec:
       host: "${HOSTNAME_HTTP}"
       to:
@@ -62,6 +57,11 @@ objects:
         name: "${NAME}"
       port:
         targetPort: web
+    metadata:
+      name: "${NAME}"
+      labels:
+        app: "${NAME}"
+        jurisdiction: "${JURISDICTION}"
 parameters:
   - name: NAME
     description: The name for the application
