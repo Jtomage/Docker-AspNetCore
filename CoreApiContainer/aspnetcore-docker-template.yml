@@ -32,6 +32,20 @@ objects:
       postCommit: {}
       triggers: []
       runPolicy: Serial
+  - kind: Route
+    apiVersion: route.openshift.io/v1
+    metadata:
+      name: ${NAME}
+      labels:
+        app: ${NAME}
+        jurisdiction: ${JURISDICTION}
+    spec:
+      host: '${HOSTNAME_HTTP}'
+      to:
+        kind: Service
+        name: ${NAME}
+      port:
+        targetPort: web      
   - kind: Service
     apiVersion: v1
     metadata:
@@ -48,20 +62,7 @@ objects:
       selector:
         app: ${NAME}
         jurisdiction: "${JURISDICTION}
-  - kind: Route
-    apiVersion: route.openshift.io/v1
-    metadata:
-      name: ${NAME}
-      labels:
-        app: ${NAME}
-        jurisdiction: ${JURISDICTION}
-    spec:
-      host: '${HOSTNAME_HTTP}'
-      to:
-        kind: Service
-        name: ${NAME}
-      port:
-        targetPort: web
+
 parameters:
   - name: NAME
     description: The name for the application
