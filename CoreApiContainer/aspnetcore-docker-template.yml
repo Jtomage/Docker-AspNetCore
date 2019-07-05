@@ -40,7 +40,7 @@ objects:
         app: ${NAME}
         jurisdiction: ${JURISDICTION}
     spec:
-      host: '${HOSTNAME_HTTP}'
+      host: '${HTTP_HOSTNAME}'
       to:
         kind: Service
         name: ${NAME}
@@ -71,6 +71,6 @@ parameters:
     description: Where the application is be deployed, eg Dev, Test, or Prod
     required: true
     displayName: JURISDICTION
-  - name: HOSTNAME_HTTP
-    description: "Custom host name for http service route. Leave Blank for default hostname, e.g.: <application-name>-<project>.<default-domain-suffix> "
+  - name: HTTP_HOSTNAME
+    description: "Custom host name for http service route. Leave Blank for default hostname, e.g.: <application-name>-<project>.<default-domain-suffix>"
     displayName: Http Host Name
