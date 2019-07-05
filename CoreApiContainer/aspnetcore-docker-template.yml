@@ -6,24 +6,24 @@ objects:
   - kind: ImageStream
     apiVersion: v1
     metadata:
-      name: "${NAME}"
+      name: ${NAME}
       labels:
-        app: "${NAME}"
-        jurisdiction: "${JURISDICTION}"
+        app: ${NAME}
+        jurisdiction: ${JURISDICTION}
     spec: {}
   - kind: BuildConfig
     apiVersion: v1
     metadata:
       name: ${NAME}
       labels:
-        app: "${NAME}"
-        jurisdiction: "${JURISDICTION}"
+        app: ${NAME}
+        jurisdiction: ${JURISDICTION}
     spec:
       nodeSelector: null
       output:
         to: 
           kind: ImageStreamTag
-          name: "${NAME}:latest"
+          name: '${NAME}:latest'
       resources: {}
       strategy:
         type: Docker
@@ -51,15 +51,15 @@ objects:
   - kind: Route
     apiVersion: route.openshift.io/v1
     metadata:
-      name: "${NAME}"
+      name: ${NAME}
       labels:
-        app: "${NAME}"
-        jurisdiction: "${JURISDICTION}"
+        app: ${NAME}
+        jurisdiction: ${JURISDICTION}
     spec:
-      host: "${HOSTNAME_HTTP}"
+      host: '${HOSTNAME_HTTP}'
       to:
         kind: Service
-        name: "${NAME}"
+        name: ${NAME}
       port:
         targetPort: web
 parameters:
