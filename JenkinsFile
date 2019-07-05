@@ -25,7 +25,11 @@ pipeline {
 				dir("CoreApiContainer"){
 					script{
 						//create or update template and "create it aka apply"
-						openshift.raw("process -f aspnetcore-docker-template.yml -p NAME=${env.API_NAME} -p JURISDICTION=DEV | oc apply -f-")
+						openshift.withCluster(){
+							openshift.withProject(env.NAMESPACE){
+								openshift.raw("process -f aspnetcore-docker-template.yml -p NAME=${env.API_NAME} -p JURISDICTION=DEV | oc apply -f-")
+							}
+						}
 					}
 				}
 			}
@@ -35,7 +39,11 @@ pipeline {
 				echo 'Building Image'
 				script{
 					//Build the image for aspnetcore-api-docker
-					openshiftBuild(bldCfg: "${en.API_NAME}", showBuildLogs: 'true')
+					openshift.withCluster(){
+						openshift.withProject(env.NAMESPACE){
+							openshiftBuild(bldCfg: "${en.API_NAME}", showBuildLogs: 'true')
+						}
+					}
 				}
 			}
 		}		
