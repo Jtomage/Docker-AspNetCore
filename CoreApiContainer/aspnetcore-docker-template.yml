@@ -57,10 +57,11 @@ objects:
         jurisdiction: "${JURISDICTION}"
     spec:
       host: "${HOSTNAME_HTTP}"
-      subdomain: ''
       to:
         kind: Service
         name: "${NAME}"
+      port:
+        targetPort: web
 parameters:
   - name: NAME
     description: The name for the application
