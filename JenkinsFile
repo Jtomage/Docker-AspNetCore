@@ -20,7 +20,7 @@ pipeline {
 		timeout(time: 20, unit: 'MINUTES')
 	}
 	stages {
-		stage('Apply Openshift templates') {
+		stage('Apply Openshift templates'){
 			steps{
 				echo 'Applying templates'
 				dir("CoreApiContainer"){
@@ -42,7 +42,7 @@ pipeline {
 					//Build the image for aspnetcore-api-docker
 					openshift.withCluster(){
 						openshift.withProject(env.NAMESPACE){
-							openshiftBuild(bldCfg: "${en.API_NAME}", showBuildLogs: 'true')
+							openshiftBuild(bldCfg: "${env.API_NAME}", showBuildLogs: 'true')
 						}
 					}
 				}
