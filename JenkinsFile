@@ -2,7 +2,7 @@ openshift.withCluster() {
 	echo "Starting pipeline"
 	env.NAMESPACE = openshift.project()
 	env.DEV = openshift.project()                   //use the same name space for dev now
-	echo "Namespace: $(env.NAMESPACE)"
+	echo "Namespace: ${env.NAMESPACE}"
 }
 
 pipeline {
