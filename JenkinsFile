@@ -42,7 +42,8 @@ pipeline {
 					//Build the image for aspnetcore-api-docker
 					openshift.withCluster(){
 						openshift.withProject(env.NAMESPACE){
-							openshiftBuild(bldCfg: "${env.API_NAME}", showBuildLogs: 'true')
+							//openshiftBuild(bldCfg: "${env.API_NAME}", showBuildLogs: 'true') //NOTE: steps like this one from the OpenShift Pipeline Plugin will not be supported against OpenShift API Servers later than v3.11
+							sh """oc start-build ${env.API_NAME} --follow"""
 						}
 					}
 				}
