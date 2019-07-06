@@ -14,7 +14,9 @@ pipeline {
 	environment {
 		//Global Vars
 		API_NAME = "aspnetcore-api-docker"
+		API_DIR = "CoreApiContainer"
 		UI_NAME = "aspnetcore-ui-docker"
+		UI_DIR = "CoreWebContainer"
 	}
 	options {
 		timeout(time: 20, unit: 'MINUTES')
@@ -23,7 +25,7 @@ pipeline {
 		stage('Apply Openshift templates'){
 			steps{
 				echo 'Applying templates'
-				dir("CoreApiContainer"){
+				dir("${env.API_DIR}"){
 					script{
 						//create or update template and "create it aka apply"
 						openshift.withCluster(){
@@ -43,7 +45,7 @@ pipeline {
 					openshift.withCluster(){
 						openshift.withProject(env.NAMESPACE){
 							//openshiftBuild(bldCfg: "${env.API_NAME}", showBuildLogs: 'true') //NOTE: steps like this one from the OpenShift Pipeline Plugin will not be supported against OpenShift API Servers later than v3.11
-							sh """oc start-build ${env.API_NAME} --follow"""
+							sh """oc start-build ${env.API_NAME} --from-dir=${env.API_DIR} --follow"""
 						}
 					}
 				}

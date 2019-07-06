@@ -30,7 +30,7 @@ objects:
       strategy:
         type: Docker
         dockerStrategy:
-          dockerfilePath: CoreApiContainer\Dockerfile
+          dockerfilePath: Dockerfile
       postCommit: {}
       triggers: []
       runPolicy: Serial
