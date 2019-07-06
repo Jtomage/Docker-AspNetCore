@@ -25,6 +25,8 @@ objects:
           kind: ImageStreamTag
           name: '${NAME}:latest'
       resources: {}
+      source:
+        type: Binary
       strategy:
         type: Docker
         dockerStrategy:
