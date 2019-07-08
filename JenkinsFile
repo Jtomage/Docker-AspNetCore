@@ -17,6 +17,8 @@ pipeline {
 		API_DIR = "CoreApiContainer"
 		UI_NAME = "aspnetcore-ui-docker"
 		UI_DIR = "CoreWebContainer"
+		//Set DOTNET_CLI_HOME
+		sh """export DOTNET_CLI_HOME=/tmp"""
 	}
 	options {
 		timeout(time: 20, unit: 'MINUTES')

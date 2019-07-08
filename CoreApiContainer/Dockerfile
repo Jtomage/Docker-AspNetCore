@@ -2,12 +2,13 @@
 FROM mcr.microsoft.com/dotnet/core/sdk:2.2 AS build
 WORKDIR /app
 
-#Handle the ports
-#ENV ASPNETCORE_URLS http://+:55910;https://+:44363
 #
 # copy csproj and restore as distinct layers
-COPY *.csproj ./
-RUN dotnet restore
+# according to this document dotnet restore is no longer needed
+# https://docs.microsoft.com/en-us/dotnet/core/tools/dotnet-publish?tabs=netcore21
+# -- Starting with .NET Core 2.0, you don't have to run dotnet restore because it's run implicitly by all commands
+#COPY *.csproj ./
+#RUN dotnet restore
 
 # copy everything else and build app
 COPY . ./
