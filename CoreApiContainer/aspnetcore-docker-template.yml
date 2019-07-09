@@ -86,7 +86,7 @@ objects:
             from:
               kind: ImageStreamTag
               name: ${NAME}:latest
-      replicas: 1
+      replicas: 3
       selector:
         app: ${NAME}
         jurisdiction: ${JURISDICTION}
@@ -99,6 +99,7 @@ objects:
           restartPolicy: Always
           containers:
             - name: ${NAME}
+              image: ${NAME}:latest
               livenessProbe:
                 httpGet:
                   path: /api/values
