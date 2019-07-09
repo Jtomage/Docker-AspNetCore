@@ -80,22 +80,21 @@ objects:
       triggers:
         - type: ConfigChange
         - type: ImageChange
-          automatic: true
-          containerNames:
-            - ${NAME}
-          from:
-            kind: ImageStreamTag
-            name: ${NAME}:latest
+            automatic: true
+            containerNames:
+              - ${NAME}
+            from:
+              kind: ImageStreamTag
+              name: ${NAME}:latest
       replicas: 1
       selector:
         app: ${NAME}
-        name: ${NAME}
         jurisdiction: ${JURISDICTION}
       template:
         metadata:
           labels:
             app: ${NAME}
-            name: ${NAME}
+            jurisdiction: ${JURISDICTION}
         spec:
           restartPolicy: Always
           containers:
