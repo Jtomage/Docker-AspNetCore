@@ -6,70 +6,127 @@ objects:
   - kind: ImageStream
     apiVersion: v1
     metadata:
-      name: "${NAME}"
+      name: ${NAME}
       labels:
-        app: "${NAME}"
-        jurisdiction: "${JURISDICTION}"
+        app: ${NAME}
+        jurisdiction: ${JURISDICTION}
     spec: {}
   - kind: BuildConfig
     apiVersion: v1
     metadata:
       name: ${NAME}
       labels:
-        app: "${NAME}"
-        jurisdiction: "${JURISDICTION}"
+        app: ${NAME}
+        jurisdiction: ${JURISDICTION}
     spec:
       nodeSelector: null
       output:
         to: 
           kind: ImageStreamTag
-          name: "${NAME}:latest"
+          name: '${NAME}:latest'
       resources: {}
+      source:
+        type: Binary
       strategy:
         type: Docker
         dockerStrategy:
-          dockerfilePath: CoreWebContainer\Dockerfile
+          env: 
+            - name: DOTNET_CLI_HOME
+              value: /tmp          
+          dockerfilePath: Dockerfile
       postCommit: {}
       triggers: []
       runPolicy: Serial
+  - kind: Route
+    apiVersion: v1
+    metadata:
+      name: ${NAME}
+      labels:
+        app: ${NAME}
+        jurisdiction: ${JURISDICTION}
+    spec:
+      host: ${HTTP_HOSTNAME}
+      to:
+        kind: Service
+        name: ${NAME}
+      port:
+        targetPort: http      
   - kind: Service
     apiVersion: v1
     metadata:
-      name: "${NAME}"
+      name: ${NAME}
       labels:
-        app: "${NAME}"
-        jurisdiction: "${JURISDICTION}"
+        app: ${NAME}
+        jurisdiction: ${JURISDICTION}
     spec:
       ports:
         - name: http
           protocol: TCP
-          port: 80
+          port: 8080
           targetPort: 8080
       selector:
         app: ${NAME}
-        jurisdiction: "${JURISDICTION}
-  - kind: Route
+        jurisdiction: ${JURISDICTION}
+  - kind: DeploymentConfig
     apiVersion: v1
     metadata:
-      name: "${NAME}"
+      name: ${NAME}
       labels:
-        app: "${NAME}"
-        jurisdiction: "${JURISDICTION}"
+        app: ${NAME}
+        jurisdiction: ${JURISDICTION}
     spec:
-      host: "${HOSTNAME_HTTP}"
-      subdomain: ''
-      to:
-        kind: Service
-        name: "${NAME}"
+      strategy:
+        type: Rolling
+      triggers:
+        - type: ConfigChange
+        - type: ImageChange
+          imageChangeParams:
+            automatic: true
+            containerNames:
+              - ${NAME}
+            from:
+              kind: ImageStreamTag
+              name: ${NAME}:latest
+      replicas: 3
+      selector:
+        app: ${NAME}
+        jurisdiction: ${JURISDICTION}
+      template:
+        metadata:
+          labels:
+            app: ${NAME}
+            jurisdiction: ${JURISDICTION}
+        spec:
+          restartPolicy: Always
+          containers:
+            - name: ${NAME}
+              image: ${NAME}:latest
+              livenessProbe:
+                httpGet:
+                  path: /
+                  port: 8080
+                  scheme: HTTP
+                initialDelaySeconds: 40
+                timeoutSeconds: 30
+              readinessProbe:
+                httpGet:
+                  path: /
+                  port: 8080
+                  scheme: HTTP
+                initialDelaySeconds: 40
+                timeoutSeconds: 30
+              env:
+                - name: ASPNETCORE_URLS
+                  value: 'http://*:8080'
 parameters:
   - name: NAME
-    description: The name for the application
+    description: 'The name for the application'
     required: true
     displayName: NAME
   - name: JURISDICTION
-    description: Where the application is be deployed, eg Dev, Test, or Prod
+    description: 'Where the application is be deployed, eg Dev, Test, or Prod'
     required: true
     displayName: JURISDICTION
-  - name: HOSTNAME_HTTP
-    description: "Custom host name for http service route. Leave Blank for default hostname, e.g.: <application-name>-<project>.<default-domain-suffix> "
+  - name: HTTP_HOSTNAME
+    description: 'Custom host name for http service route. Leave Blank for default hostname, e.g.: <application-name>-<project>.<default-domain-suffix>'
     displayName: Http Host Name

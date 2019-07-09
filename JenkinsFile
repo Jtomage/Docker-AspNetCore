@@ -35,6 +35,15 @@ pipeline {
 						}
 					}
 				}
+				dir("${env.UI_DIR}"){
+					script{
+						openshift.withCluster(){
+							openshift.withProject(env.NAMESPACE){
+								sh """oc process -f aspnetcore-docker-template.yml -p NAME=${env.UI_NAME} -p JURISDICTION=DEV | oc apply -f-"""
+							}
+						}
+					}
+				}
 			}
 		}
 		stage('Build Image'){
@@ -46,6 +55,7 @@ pipeline {
 						openshift.withProject(env.NAMESPACE){
 							//openshiftBuild(bldCfg: "${env.API_NAME}", showBuildLogs: 'true') //NOTE: steps like this one from the OpenShift Pipeline Plugin will not be supported against OpenShift API Servers later than v3.11
 							sh """oc start-build ${env.API_NAME} --from-dir=${env.API_DIR} --follow"""
+							sh """oc start-build ${env.UI_NAME} --from-dir=${env.UI_DIR} --follow""
 						}
 					}
 				}
