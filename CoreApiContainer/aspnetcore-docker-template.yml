@@ -31,6 +31,9 @@ objects:
         type: Docker
         dockerStrategy:
           dockerfilePath: Dockerfile
+        env: 
+          - name: DOTNET_CLI_HOME
+            value: /tmp
       postCommit: {}
       triggers: []
       runPolicy: Serial

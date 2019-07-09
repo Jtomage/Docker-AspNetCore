@@ -27,8 +27,6 @@ pipeline {
 				echo 'Applying templates'
 				dir("${env.API_DIR}"){
 					script{
-						//Set DOTNET_CLI_HOME
-						sh """export DOTNET_CLI_HOME=/tmp"""
 						//create or update template and "create it aka apply"
 						openshift.withCluster(){
 							openshift.withProject(env.NAMESPACE){
