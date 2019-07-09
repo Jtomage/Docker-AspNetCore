@@ -100,20 +100,20 @@ objects:
           restartPolicy: Always
           containers:
             name: ${NAME}
-          livenessProbe:
-            httpGet:
-              path: /api/values
-              port: 8080
-              scheme: HTTP
-            initialDelaySeconds: 40
-            timeoutSeconds: 30
-          readinessProbe:
-            httpGet:
-              path: /api/values
-              port: 8080
-              scheme: HTTP
-            initialDelaySeconds: 40
-            timeoutSeconds: 30
+            livenessProbe:
+              httpGet:
+                path: /api/values
+                port: 8080
+                scheme: HTTP
+              initialDelaySeconds: 40
+              timeoutSeconds: 30
+            readinessProbe:
+              httpGet:
+                path: /api/values
+                port: 8080
+                scheme: HTTP
+              initialDelaySeconds: 40
+              timeoutSeconds: 30
 parameters:
   - name: NAME
     description: 'The name for the application'
