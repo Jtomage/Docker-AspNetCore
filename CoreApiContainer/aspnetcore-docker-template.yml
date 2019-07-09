@@ -80,6 +80,7 @@ objects:
       triggers:
         - type: ConfigChange
         - type: ImageChange
+          imageChangeParams:
             automatic: true
             containerNames:
               - ${NAME}
