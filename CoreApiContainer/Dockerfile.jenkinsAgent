@@ -6,13 +6,8 @@ COPY . ./
 RUN dotnet publish -c Release -o out
 
 #Use the jenkins agent and install asp.net runtime
-FROM quay.io/openshift/origin-jenkins-agent-base
-
-ENV NUGET_XMLDOC_MODE=skip \
-    DOTNET_SKIP_FIRST_TIME_EXPERIENCE=1
-
-RUN yum install rh-dotnet22 -y /
-    scl enable rh-dotnet22 bash
+#FROM quay.io/openshift/origin-jenkins-agent-base
+FROM image-registry.openshift-image-registry.svc:5000/default/dotnet-22-jenkins-slave-rhel7:latest
 
 WORKDIR /app
 COPY --from=build /app/out
