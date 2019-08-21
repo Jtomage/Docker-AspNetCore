@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata: 
+  name: dotnet-web
+  labels:
+    app: dotnet-web
+spec: 
+  replicas: 1
+  selector: 
+    matchLabels:
+      app: dotnet-web
+  template:
+    metadata: 
+      labels:
+        app: dotnet-web
+    spec:
+      containers:
+        - name: dotnet-web
+          image: dotnet-web
+          imagePullPolicy: IfNotPresent
+          env:
+            -  name: ASPNETCORE_URLS
+               value: 'http://*:8080'
