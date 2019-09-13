@@ -47,3 +47,6 @@ There may be a problem when trying to run the docker image if the port has been 
 ```
 Error starting userland proxy
 ```
+
+## Other notes
+testing some jenkins pipeline builds which were done using openshift.
